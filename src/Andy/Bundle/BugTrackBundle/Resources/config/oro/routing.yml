@@ -1,0 +1,5 @@
+bug_track_bundle:
+    resource:     "@AndyBugTrackBundle/Controller"
+    type:         annotation
+    prefix:       /
+

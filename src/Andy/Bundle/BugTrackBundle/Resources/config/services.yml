@@ -1,0 +1,19 @@
+parameters:
+    issue.entity.class: Andy\Bundle\BugTrackBundle\Entity\Issue
+    issue.types:
+        Bug: 'andy.bug_track.types.bug'
+        Task: 'andy.bug_track.types.task'
+        Story: 'andy.bug_track.types.story'
+        Subtask: 'andy.bug_track.types.subtask'
+
+services:
+    andy_bug_track.handler.base_handler:
+        class: Andy\Bundle\BugTrackBundle\Handler\BaseHandler
+        abstract: true
+        calls:
+            - [setTokenStorage, ["@security.token_storage"]]
+
+    andy_bug_track.handler.issue_handler:
+        class: Andy\Bundle\BugTrackBundle\Handler\IssueHandler
+        parent: andy_bug_track.handler.base_handler
+        arguments: ['@doctrine.orm.entity_manager']

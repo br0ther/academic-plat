@@ -1,0 +1,103 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% import 'OroUserBundle::macros.html.twig' as U %}
+{% import 'OroActivityBundle::macros.html.twig' as AC %}
+
+{% oro_title_set({params : {"%entity.code%": entity.code|default('N/A') }}) %}
+
+{% block navButtons %}
+    {% if resource_granted('EDIT', entity) %}
+        {{ UI.editButton({
+            'path' : path('issue_update', { id: entity.id }),
+            'entity_label': 'andy.bug_track.entity_label'|trans
+        }) }}
+
+        {% if entity.type == constant("Andy\\Bundle\\BugTrackBundle\\Entity\\Issue::TYPE_STORY") %}
+            {{ UI.button({
+                'path' : path('issue_create', { parent: entity.id }),
+                'label': 'andy.bug_track.subissue.entity_label_add'|trans
+            }) }}
+        {% endif %}
+    {% endif %}
+
+    {% if resource_granted('DELETE', entity) %}
+        {{ UI.deleteButton({
+            'dataUrl': path('issue_delete', {'id': entity.id}),
+            'dataRedirect': path('issue_index'),
+            'aCss': 'no-hash remove-button',
+            'id': 'btn-remove-issue',
+            'dataId': entity.id,
+            'entity_label': 'andy.bug_track.entity_label'|trans,
+        }) }}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+    'entity':      entity,
+    'indexPath':   path('issue_index'),
+    'indexLabel': 'andy.bug_track.entity_plural_label'|trans,
+    'entityTitle': entity.summary
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block breadcrumb %}
+    {% set breadcrumbs = [
+        { label: 'andy.bug_track.entity_plural_label'|trans },
+        { label: 'andy.bug_track.menu.issue_view'|trans }
+    ] %}
+    {% include 'OroNavigationBundle:Menu:breadcrumbs.html.twig' %}
+{% endblock breadcrumb %}
+
+{% block content_data %}
+    {% set data %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ UI.renderProperty('andy.bug_track.code.label'|trans, entity.code) }}
+                    {{ UI.renderProperty('andy.bug_track.summary.label'|trans, entity.summary) }}
+                    {{ UI.renderProperty('andy.bug_track.type.label'|trans, entity.type) }}
+                    {{ UI.renderHtmlProperty('andy.bug_track.description.label'|trans, entity.description|nl2br) }}
+                    {{ UI.renderProperty('oro.ui.created_at'|trans, entity.createdAt|oro_format_datetime) }}
+                    {{ UI.renderProperty('oro.ui.updated_at'|trans, entity.updatedAt|oro_format_datetime) }}
+                    {{ UI.renderProperty('andy.bug_track.priority.label'|trans, entity.priority) }}
+                    {{ UI.renderProperty('andy.bug_track.resolution.label'|trans, entity.resolution) }}
+
+                    {%- set assigneeData -%}
+                        {%- if entity.assignee -%}
+                            {{ U.render_user_name(entity.assignee) }}
+                        {%- endif -%}
+                    {%- endset -%}
+                    {{ UI.renderHtmlProperty('andy.bug_track.assignee.label'|trans, assigneeData) }}
+
+                    {%- set reporterData -%}
+                        {%- if entity.reporter -%}
+                            {{ U.render_user_name(entity.reporter) }}
+                        {%- endif -%}
+                    {%- endset -%}
+                    {{ UI.renderHtmlProperty('andy.bug_track.reporter.label'|trans, reporterData) }}
+
+                    {% if entity.parentIssue %}
+                        <a href="{{ path('issue_view', {'id': entity.parentIssue.id}) }}">
+                            {{ UI.renderProperty('andy.bug_track.subissue.parent_story'|trans, entity.parentIssue.code) }}</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set dataBlocks = [
+        {
+            'title': 'Data'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [data] }
+            ]
+        }
+    ] %}
+
+    {% set id = 'issueView' %}
+    {% set data = { 'dataBlocks': dataBlocks } %}
+    {{ parent() }}
+{% endblock content_data %}

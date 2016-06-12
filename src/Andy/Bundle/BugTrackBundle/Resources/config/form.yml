@@ -1,0 +1,5 @@
+services:
+    andy_bug_track.issue_form_type:
+        class: Andy\Bundle\BugTrackBundle\Form\Type\IssueFormType
+        tags:
+            - { name: form.type, alias: tracker_issue }

@@ -1,0 +1,156 @@
+datagrid:
+    issues-grid:
+        pageTitle: andy.bug_track.report
+        source:
+            extended_entity_name: %issue.entity.class%
+            acl_resource: issue_view
+            type: orm
+            query:
+                select:
+                    - issue.id
+                    - issue.code
+                    - issue.summary
+                    - type_enum.name as type
+                    - priority.name as priorityName
+                    - resolution.name as resolutionName
+                    - assignee.id as assigneeId
+                    - CONCAT(assignee.firstName, ' ', assignee.lastName) as assigneeFullName
+                    - reporter.id as reporterId
+                    - CONCAT(reporter.firstName, ' ', reporter.lastName) as reporterFullName
+                    - issue.createdAt
+                    - issue.updatedAt
+                from:
+                    - { table: AndyBugTrackBundle:Issue, alias: issue }
+                join:
+                    left:
+                        - { join: issue.type, alias: type_enum }
+                        - { join: issue.priority, alias: priority }
+                        - { join: issue.resolution, alias: resolution }
+                        - { join: issue.assignee, alias: assignee }
+                        - { join: issue.reporter, alias: reporter }
+                        - { join: issue.collaborators, alias: collaborators }
+        columns:
+            code:
+                label: andy.bug_track.code.label
+            summary:
+                label: andy.bug_track.summary.label
+            type:
+                label: andy.bug_track.type.label
+            priorityName:
+                label: andy.bug_track.priority.label
+            resolutionName:
+                label: andy.bug_track.resolution.label
+            reporterFullName:
+                label: andy.bug_track.reporter.label
+            assigneeFullName:
+                label: andy.bug_track.assignee.label
+            createdAt:
+                label: oro.ui.created_at
+                frontend_type: datetime
+            updatedAt:
+                label: oro.ui.updated_at
+                frontend_type: datetime
+            collaborators:
+                label: andy.bug_track.collaborators.label
+                renderable: false
+        sorters:
+            columns:
+                code:
+                    data_name: issue.code
+                summary:
+                    data_name: issue.summary
+                type:
+                    data_name: issue.type
+                priorityName:
+                    data_name: priority.name
+                resolutionName:
+                    data_name: resolution.name
+                reporterFullName:
+                    data_name: reporterFullName
+                assigneeFullName:
+                    data_name: assigneeFullName
+                createdAt:
+                    data_name: issue.createdAt
+                updatedAt:
+                    data_name: issue.updatedAt
+            default:
+                updatedAt: DESC
+        filters:
+            columns:
+                code:
+                    type: string
+                    data_name: issue.code
+                summary:
+                    type:      string
+                    data_name: issue.summary
+                type:
+                    label: andy.bug_track.type.label
+                    type: choice
+                    data_name: issue.type
+                    options:
+                        field_options:
+                              multiple: true
+                              choices: '%issue.types%'
+                collaborators:
+                    type: entity
+                    data_name: collaborators.id
+                    options:
+                        field_options:
+                            class: OroUserBundle:User
+                            translatable_options: false
+                priorityName:
+                    label: andy.bug_track.priority.label
+                    type: entity
+                    data_name: priority.name
+                    options:
+                        field_options:
+                              class: AndyBugTrackBundle:Priority
+                              multiple: true
+                              property: name
+                              translatable_options: false
+                resolutionName:
+                    type: string
+                    data_name: issue.resolution
+                reporterFullName:
+                    type: string
+                    data_name: issue.reporter
+                assigneeFullName:
+                    type: string
+                    data_name: issue.assignee
+                createdAt:
+                    type:      datetime
+                    data_name: issue.createdAt
+                updatedAt:
+                    type:      datetime
+                    data_name: issue.updatedAt
+        properties:
+            id: ~
+            owner: ~
+            view_link:
+                type: url
+                route: issue_view
+                params: [ id ]
+            update_link:
+                type: url
+                route: issue_update
+                params: [ id ]
+        actions:
+            view_issue:
+                type:          navigate
+                acl_resource:  issue_view
+                label:         oro.grid.action.view
+                icon:          eye-open
+                link:          view_link
+                rowAction:     true
+            update_issue:
+                type:          navigate
+                acl_resource:  issue_create
+                label:         oro.grid.action.update
+                icon:          edit
+                link:          update_link
+            delete_issue:
+                type:          delete
+                acl_resource:  issue_delete
+                label:         oro.grid.action.delete
+                icon:          trash
+                link:          delete_link

@@ -1,0 +1,61 @@
+andy:
+    bug_track:
+        types:
+          subtask: Subtask
+          task: Task
+          bug: Bug
+          story: Story
+        report: Issue Report
+        menu:
+            label:  Issues
+            issue_create: Create Issue
+            issue_update: Update Issue
+            issue_view: View Issue
+        action:
+            create: Create Issue
+        entity_label:               Issue
+        entity_plural_label:        Issues
+        code.label:                 Code
+        summary.label:              Summary
+        type.label:                 Type
+        description.label:          Description
+        workflow_step.label:        Status
+        priority.label:             Priority
+        resolution.label:           Resolution
+        assignee.label:             Assigned To
+        reporter.label:             Reported By
+        related.label:              Related Issues
+        collaborators.label:        Collaborators
+        organization.label:         Organization
+        parent.label:               Parent
+        children.label:             Children
+
+        priority:
+            entity_label:   Issue Priority
+            name.label:     Name
+            order.label:    Order
+
+        resolution:
+            entity_label:   Issue Resolution
+            name.label:     Name
+            label.label:    Label
+
+        saved_message:              Issue saved.
+
+        widget:
+          label_by_status: Issues by Status
+          description_by_status: Issues by Status
+          label: Recent Issues
+          description: Recent Issues
+
+        user_issues:
+          label: User Issues
+        view_all: 'View All'
+
+        subissue:
+            entity_label:               Sub-Task
+            entity_label_add:           Add Sub-Task
+            entity_plural_label:        Sub-Tasks
+            parent_story:               Parent Story
+
+
