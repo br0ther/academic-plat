@@ -61,11 +61,11 @@ class AndyBugTrackBundle implements Migration, ExtendExtensionAwareInterface
         $table = $schema->createTable('bug_track_issue');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('resolution_id', 'integer', ['notnull' => false]);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('assignee_id', 'integer', ['notnull' => false]);
         $table->addColumn('parent_id', 'integer', ['notnull' => false]);
         $table->addColumn('priority_id', 'integer', ['notnull' => false]);
         $table->addColumn('reporter_id', 'integer', ['notnull' => false]);
-//        $table->addColumn('type_id', 'string', ['notnull' => false, 'length' => 32]);
         $table->addColumn('summary', 'string', ['length' => 255]);
         $table->addColumn('code', 'string', ['length' => 25]);
         $table->addColumn('description', 'text', ['notnull' => false, 'length' => 255]);
@@ -95,12 +95,12 @@ class AndyBugTrackBundle implements Migration, ExtendExtensionAwareInterface
 
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['code'], 'UNIQ_12AD233E77153098');
-//        $table->addIndex(['type_id'], 'idx_bug_track_issue_type_id', []);
         $table->addIndex(['priority_id'], 'IDX_12AD233E497B19F9', []);
         $table->addIndex(['resolution_id'], 'IDX_12AD233E12A1C43A', []);
         $table->addIndex(['reporter_id'], 'IDX_12AD233EE1CFE6F5', []);
         $table->addIndex(['assignee_id'], 'IDX_12AD233E59EC7D60', []);
         $table->addIndex(['parent_id'], 'IDX_12AD233E727ACA70', []);
+        $table->addIndex(['organization_id'], 'IDX_671503B332C8A3DE', []);
     }
 
     /**
@@ -173,6 +173,12 @@ class AndyBugTrackBundle implements Migration, ExtendExtensionAwareInterface
         $table->addForeignKeyConstraint(
             $schema->getTable('bug_track_resolution'),
             ['resolution_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );

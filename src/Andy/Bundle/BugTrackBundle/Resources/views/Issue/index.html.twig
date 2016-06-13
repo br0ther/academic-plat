@@ -1,14 +1,14 @@
 {% extends 'OroUIBundle:actions:index.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 
-{% set pageTitle = 'andy.bug_track.menu.label'|trans %}
+{% set pageTitle = 'andy.bugtrack.issue.menu.label'|trans %}
 
 {% block navButtons %}
     {% if resource_granted('issue_create') %}
         {{ UI.addButton({
             'aCss': 'btn-group',
             'path' : path('issue_create'),
-            'entity_label': 'andy.bug_track.entity_label'|trans
+            'entity_label': 'andy.bugtrack.issue.entity_label'|trans
         }) }}
     {% endif %}
 {% endblock %}

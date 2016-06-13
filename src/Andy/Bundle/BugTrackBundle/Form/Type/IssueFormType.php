@@ -50,7 +50,7 @@ class IssueFormType extends AbstractType
                 'text',
                 [
                     'required' => true,
-                    'label' => 'andy.bug_track.code.label'
+                    'label' => 'andy.bugtrack.issue.code.label'
                 ]
             )
             ->add(
@@ -58,14 +58,14 @@ class IssueFormType extends AbstractType
                 'text',
                 [
                     'required' => true,
-                    'label' => 'andy.bug_track.summary.label'
+                    'label' => 'andy.bugtrack.issue.summary.label'
                 ]
             )
             ->add(
                 'type',
                 'entity',
                 [
-                    'label' => 'andy.bug_track.type.label',
+                    'label' => 'andy.bugtrack.issue.type.label',
                     'class' => ExtendHelper::buildEnumValueClassName('issue_type'),
                     'choices' => $this->types,
                 ]
@@ -75,7 +75,7 @@ class IssueFormType extends AbstractType
                 'textarea',
                 [
                     'required' => false,
-                    'label' => 'andy.bug_track.description.label'
+                    'label' => 'andy.bugtrack.issue.description.label'
                 ]
             )
             ->add(
@@ -83,7 +83,7 @@ class IssueFormType extends AbstractType
                 'translatable_entity',
                 [
                     'required' => true,
-                    'label' => 'andy.bug_track.priority.label',
+                    'label' => 'andy.bugtrack.issue.priority.label',
                     'class' => Priority::class
                 ]
             )
@@ -92,7 +92,7 @@ class IssueFormType extends AbstractType
                 'oro_user_select',
                 [
                     'required' => true,
-                    'label' => 'andy.bug_track.assignee.label'
+                    'label' => 'andy.bugtrack.issue.assignee.label'
                 ]
             )
             ->add(
@@ -100,7 +100,7 @@ class IssueFormType extends AbstractType
                 'oro_user_select',
                 [
                     'required' => true,
-                    'label' => 'andy.bug_track.reporter.label'
+                    'label' => 'andy.bugtrack.issue.reporter.label'
                 ]
             )
             ->add(
@@ -109,7 +109,7 @@ class IssueFormType extends AbstractType
                 [
                     'required' => false,
                     'multiple' => true,
-                    'label' => 'andy.bug_track.related.label',
+                    'label' => 'andy.bugtrack.issue.related.label',
                     'class' => Issue::class
                 ]
             )
@@ -118,7 +118,7 @@ class IssueFormType extends AbstractType
                 'translatable_entity',
                 [
                     'required' => false,
-                    'label' => 'andy.bug_track.resolution.label',
+                    'label' => 'andy.bugtrack.issue.resolution.label',
                     'class' => Resolution::class
                 ]
             );

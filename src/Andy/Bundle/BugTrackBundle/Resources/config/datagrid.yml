@@ -1,6 +1,6 @@
 datagrid:
     issues-grid:
-        pageTitle: andy.bug_track.report
+        pageTitle: andy.bugtrack.issue.report
         source:
             extended_entity_name: %issue.entity.class%
             acl_resource: issue_view
@@ -31,19 +31,19 @@ datagrid:
                         - { join: issue.collaborators, alias: collaborators }
         columns:
             code:
-                label: andy.bug_track.code.label
+                label: andy.bugtrack.issue.code.label
             summary:
-                label: andy.bug_track.summary.label
+                label: andy.bugtrack.issue.summary.label
             type:
-                label: andy.bug_track.type.label
+                label: andy.bugtrack.issue.type.label
             priorityName:
-                label: andy.bug_track.priority.label
+                label: andy.bugtrack.issue.priority.label
             resolutionName:
-                label: andy.bug_track.resolution.label
+                label: andy.bugtrack.issue.resolution.label
             reporterFullName:
-                label: andy.bug_track.reporter.label
+                label: andy.bugtrack.issue.reporter.label
             assigneeFullName:
-                label: andy.bug_track.assignee.label
+                label: andy.bugtrack.issue.assignee.label
             createdAt:
                 label: oro.ui.created_at
                 frontend_type: datetime
@@ -51,7 +51,7 @@ datagrid:
                 label: oro.ui.updated_at
                 frontend_type: datetime
             collaborators:
-                label: andy.bug_track.collaborators.label
+                label: andy.bugtrack.issue.collaborators.label
                 renderable: false
         sorters:
             columns:
@@ -84,13 +84,10 @@ datagrid:
                     type:      string
                     data_name: issue.summary
                 type:
-                    label: andy.bug_track.type.label
-                    type: choice
+                    label: andy.bugtrack.issue.type.label
+                    type: enum
+                    enum_code: issue_type
                     data_name: issue.type
-                    options:
-                        field_options:
-                              multiple: true
-                              choices: '%issue.types%'
                 collaborators:
                     type: entity
                     data_name: collaborators.id
@@ -99,7 +96,7 @@ datagrid:
                             class: OroUserBundle:User
                             translatable_options: false
                 priorityName:
-                    label: andy.bug_track.priority.label
+                    label: andy.bugtrack.issue.priority.label
                     type: entity
                     data_name: priority.name
                     options:
@@ -133,6 +130,10 @@ datagrid:
             update_link:
                 type: url
                 route: issue_update
+                params: [ id ]
+            delete_link:
+                type: url
+                route: issue_delete
                 params: [ id ]
         actions:
             view_issue:

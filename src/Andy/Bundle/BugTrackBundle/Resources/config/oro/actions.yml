@@ -1,0 +1,14 @@
+operations:
+    add_subtask_action:
+        label: andy.bugtrack.subissue.entity_label_add
+        entities:
+            - %issue.entity.class%
+        routes:
+            - "issue_view"
+        preconditions:
+            @equal: [$type.id, "story"]
+        actions:
+            - @redirect:
+                route: "issue_create"
+                route_parameters:
+                    parent: $id
