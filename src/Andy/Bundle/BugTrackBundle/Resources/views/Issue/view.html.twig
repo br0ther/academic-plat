@@ -90,6 +90,56 @@
         }
     ] %}
 
+    {#{% set dataBlocks = dataBlocks|merge([{#}
+    {#'title': 'andy.bugtrack.issue.user_issues.label'|trans,#}
+    {#'subblocks': [{#}
+    {#'title': '',#}
+    {#'useSpan': false,#}
+    {#'data' : [#}
+    {#dataGrid.renderGrid('user-issues-grid', {'userId': user.id})#}
+    {#]#}
+    {#}]#}
+    {#}] ) %}#}
+
+    {% if entity.relatedIssues is not null %}
+        {% set dataBlocks = dataBlocks|merge([{
+        'title': 'andy.bugtrack.issue.related.label'|trans,
+        'subblocks': [{
+        'title': '',
+        'useSpan': false,
+        'data' : [
+        dataGrid.renderGrid('related-issues-grid', {'id': entity.id})
+        ]
+        }]
+        }] ) %}
+    {% endif %}
+
+    {% if entity.type == constant("Andy\\Bundle\\BugTrackBundle\\Entity\\Issue::TYPE_STORY") %}
+        {% set dataBlocks = dataBlocks|merge([{
+        'title': 'andy.bugtrack.subissue.entity_plural_label'|trans,
+        'subblocks': [{
+        'title': '',
+        'useSpan': false,
+        'data' : [
+        dataGrid.renderGrid('subtask-issues-grid', {'parentId': entity.id})
+        ]
+        }]
+        }] ) %}
+    {% endif %}
+
+    {% if entity.collaborators is not null %}
+        {% set dataBlocks = dataBlocks|merge([{
+        'title': 'andy.bugtrack.issue.collaborators.label'|trans,
+        'subblocks': [{
+        'title': '',
+        'useSpan': false,
+        'data' : [
+        dataGrid.renderGrid('collaborators-grid', {'id': entity.id})
+        ]
+        }]
+        }] ) %}
+    {% endif %}
+
     {% set id = 'issueView' %}
     {% set data = { 'dataBlocks': dataBlocks } %}
     {{ parent() }}

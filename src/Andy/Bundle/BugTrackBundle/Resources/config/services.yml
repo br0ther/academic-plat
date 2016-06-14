@@ -3,13 +3,9 @@ parameters:
     resolution.entity.class: Andy\Bundle\BugTrackBundle\Entity\Resolution
 
 services:
-    andy_bug_track.handler.base_handler:
-        class: Andy\Bundle\BugTrackBundle\Handler\BaseHandler
-        abstract: true
-        calls:
-            - [setTokenStorage, ["@security.token_storage"]]
-
     andy_bug_track.handler.issue_handler:
         class: Andy\Bundle\BugTrackBundle\Handler\IssueHandler
-        parent: andy_bug_track.handler.base_handler
-        arguments: ['@doctrine.orm.entity_manager']
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@security.token_storage"
+

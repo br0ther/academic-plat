@@ -155,3 +155,65 @@ datagrid:
                 label:         oro.grid.action.delete
                 icon:          trash
                 link:          delete_link
+    subtask-issues-grid:
+        extends: issues-grid
+        source:
+            query:
+                where:
+                    and:
+                        - issue.parentIssue = :parentId
+            bind_parameters:
+                - parentId
+        filters: ~
+        options:
+            toolbarOptions:
+                hide: true
+    related-issues-grid:
+        extends: issues-grid
+        source:
+            query:
+                where:
+                    and:
+                        - :id MEMBER OF issue.relatedIssues
+            bind_parameters:
+                - id
+        filters: ~
+        options:
+            toolbarOptions:
+                hide: true
+    user-issues-grid:
+        extends: issues-grid
+        source:
+            query:
+                where:
+                    and:
+                        - issue.assignee = :userId or issue.reporter = :userId
+            bind_parameters:
+                - userId
+        filters: ~
+        options:
+            toolbarOptions:
+                hide: true
+
+    collaborators-grid:
+        extends: users-grid
+        source:
+            query:
+                where:
+                    and:
+                        - u.id = collaborators.id
+                join:
+                    inner:
+                        -
+                            join: AndyBugTrackBundle:Issue
+                            alias: issue
+                            conditionType: WITH
+                            condition: "issue.id = :id"
+                    left:
+                        -   { join: issue.collaborators, alias: collaborators }
+            bind_parameters:
+                - id
+        filters: ~
+        options:
+            toolbarOptions:
+                hide: true

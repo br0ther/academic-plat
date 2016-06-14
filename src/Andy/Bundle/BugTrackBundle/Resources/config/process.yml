@@ -1,0 +1,39 @@
+definitions:
+    issue_collaborators_definition:
+        label: 'Issue Collaborators Definition'
+        enabled: true
+        entity: Andy\Bundle\BugTrackBundle\Entity\Issue
+        order: 20
+        exclude_definitions: [issue_collaborators_definition]
+        actions_configuration:
+            - @call_service_method:
+                service: "andy_bug_track.handler.issue_handler"
+                method: "addIssueCollaborators"
+                method_parameters: [$.data]
+    note_collaborators_definition:
+        label: 'Note Collaborators Definition'
+        enabled: true
+        entity: Oro\Bundle\NoteBundle\Entity\Note
+        order: 30
+        exclude_definitions: [note_collaborators_definition]
+        actions_configuration:
+            - @call_service_method:
+                service: "andy_bug_track.handler.issue_handler"
+                method: "addNoteCollaborators"
+                method_parameters: [$.data]
+            - @call_service_method:
+                service: "andy_bug_track.handler.issue_handler"
+                method: "setIssueUpdatedAtWithNote"
+                method_parameters: [$.data]
+triggers:
+    issue_collaborators_definition:
+        -
+            event: create
+        -
+            event: update
+            field: assignee
+    note_collaborators_definition:
+        -
+            event: create
+        -
+            event: update
