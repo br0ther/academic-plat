@@ -75,8 +75,10 @@ class AndyBugTrackBundle implements Migration, ExtendExtensionAwareInterface, No
     {
         $table = $schema->createTable('bug_track_issue');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('workflow_item_id', 'integer', ['notnull' => false]);
         $table->addColumn('resolution_id', 'integer', ['notnull' => false]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
+        $table->addColumn('workflow_step_id', 'integer', ['notnull' => false]);
         $table->addColumn('assignee_id', 'integer', ['notnull' => false]);
         $table->addColumn('parent_id', 'integer', ['notnull' => false]);
         $table->addColumn('priority_id', 'integer', ['notnull' => false]);
@@ -110,12 +112,14 @@ class AndyBugTrackBundle implements Migration, ExtendExtensionAwareInterface, No
 
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['code'], 'UNIQ_12AD233E77153098');
+        $table->addUniqueIndex(['workflow_item_id'], 'UNIQ_671503B31023C4EE');
         $table->addIndex(['priority_id'], 'IDX_12AD233E497B19F9', []);
         $table->addIndex(['resolution_id'], 'IDX_12AD233E12A1C43A', []);
         $table->addIndex(['reporter_id'], 'IDX_12AD233EE1CFE6F5', []);
         $table->addIndex(['assignee_id'], 'IDX_12AD233E59EC7D60', []);
         $table->addIndex(['parent_id'], 'IDX_12AD233E727ACA70', []);
         $table->addIndex(['organization_id'], 'IDX_671503B332C8A3DE', []);
+        $table->addIndex(['workflow_step_id'], 'IDX_671503B371FE882C', []);
 
         $this->noteExtension->addNoteAssociation($schema, $table->getName());
     }
@@ -188,6 +192,12 @@ class AndyBugTrackBundle implements Migration, ExtendExtensionAwareInterface, No
     {
         $table = $schema->getTable('bug_track_issue');
         $table->addForeignKeyConstraint(
+            $schema->getTable('oro_workflow_item'),
+            ['workflow_item_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
             $schema->getTable('bug_track_resolution'),
             ['resolution_id'],
             ['id'],
@@ -196,6 +206,12 @@ class AndyBugTrackBundle implements Migration, ExtendExtensionAwareInterface, No
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_organization'),
             ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_workflow_step'),
+            ['workflow_step_id'],
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
