@@ -8,17 +8,24 @@ use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
+use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtension;
+use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class AndyBugTrackBundle implements Migration, ExtendExtensionAwareInterface
+class AndyBugTrackBundle implements Migration, ExtendExtensionAwareInterface, NoteExtensionAwareInterface
 {
     /**
      * @var ExtendExtension
      */
     protected $extendExtension;
+
+    /**
+     * @var NoteExtension
+     */
+    protected $noteExtension;
 
     /**
      * {@inheritdoc}
@@ -31,6 +38,14 @@ class AndyBugTrackBundle implements Migration, ExtendExtensionAwareInterface
     public function setExtendExtension(ExtendExtension $extendExtension)
     {
         $this->extendExtension = $extendExtension;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setNoteExtension(NoteExtension $noteExtension)
+    {
+        $this->noteExtension = $noteExtension;
     }
 
     /**
@@ -101,6 +116,8 @@ class AndyBugTrackBundle implements Migration, ExtendExtensionAwareInterface
         $table->addIndex(['assignee_id'], 'IDX_12AD233E59EC7D60', []);
         $table->addIndex(['parent_id'], 'IDX_12AD233E727ACA70', []);
         $table->addIndex(['organization_id'], 'IDX_671503B332C8A3DE', []);
+
+        $this->noteExtension->addNoteAssociation($schema, $table->getName());
     }
 
     /**

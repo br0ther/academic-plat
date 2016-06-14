@@ -1,2 +1,2 @@
 bundles:
-  -  name: Andy\Bundle\BugTrackBundle\AndyBugTrackBundle
+  - { name: Andy\Bundle\BugTrackBundle\AndyBugTrackBundle, priority: 20000 }

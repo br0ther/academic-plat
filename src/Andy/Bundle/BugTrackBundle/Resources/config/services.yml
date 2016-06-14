@@ -1,5 +1,6 @@
 parameters:
     issue.entity.class: Andy\Bundle\BugTrackBundle\Entity\Issue
+    resolution.entity.class: Andy\Bundle\BugTrackBundle\Entity\Resolution
 
 services:
     andy_bug_track.handler.base_handler:

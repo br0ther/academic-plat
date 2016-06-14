@@ -1,0 +1,128 @@
+workflows:
+    issue_workflow:
+        label: 'Issues Workflow'
+        entity: Andy\Bundle\BugTrackBundle\Entity\Issue
+        entity_attribute: issue
+        start_step: open
+        steps_display_ordered: true
+
+        steps:
+            open:
+                label: 'Open'
+                order: 10
+                allowed_transitions:
+                    - start_progress
+                    - resolve
+                    - close
+            in_progress:
+                label: 'In progress'
+                order: 20
+                allowed_transitions:
+                    - stop_progress
+                    - resolve
+                    - close
+            closed:
+                label: 'Closed'
+                order: 40
+                allowed_transitions:
+                    - reopen
+            resolved:
+                label: 'Resolved'
+                order: 30
+                allowed_transitions:
+                    - reopen
+                    - close
+            reopened:
+                label: 'Reopened'
+                order: 50
+                allowed_transitions:
+                    - start_progress
+
+        attributes:                                                 # list of all existing attributes in workflow
+            resolution_entity:
+                label: 'Resolution Entity'
+                type: entity
+                options:
+                    class: Andy\Bundle\BugTrackBundle\Entity\Resolution
+            resolution:
+                property_path: issue.resolution
+            assignee:
+                property_path: issue.assignee
+
+        transitions:                                                # list of all existing transitions in workflow
+            start_progress:
+                label: 'Start progress'
+                step_to: in_progress
+                transition_definition: start_progress_definition
+                frontend_options:
+                    icon: 'icon-play'
+            stop_progress:
+                label: 'Stop progress'
+                step_to: open
+                transition_definition: stop_progress_definition
+                frontend_options:
+                        icon: 'icon-stop'
+            resolve:
+                label: 'Resolve'
+                step_to: resolved
+                transition_definition: resolve_definition
+                form_options:
+                    attribute_fields:
+                        resolution:
+                            form_type: translatable_entity
+                            options:
+                                class: Andy\Bundle\BugTrackBundle\Entity\Resolution
+                                label: 'Resolve Resolution'
+                                required: true
+
+            close:
+                label: 'Close'
+                step_to: closed
+                transition_definition: close_definition
+                form_options:
+                    attribute_fields:
+                        resolution:
+                            form_type: translatable_entity
+                            options:
+                                class: Andy\Bundle\BugTrackBundle\Entity\Resolution
+                                label: 'Close Resolution'
+                                required: true
+            reopen:
+                label: 'Reopen'
+                step_to: reopened
+                transition_definition: reopen_definition
+                form_options:
+                    attribute_fields:
+                        assignee:
+                            form_type: oro_user_select
+                            options:
+                                label: 'Assignee'
+                                required: true
+
+        transition_definitions:                                      # list of all existing transition definitions
+            start_progress_definition: ~
+            stop_progress_definition: ~
+            resolve_definition:
+                post_actions:
+                   - @call_method:
+                        object: $issue
+                        method: setResolution
+                        method_parameters: [$resolution]
+
+            close_definition:
+                post_actions:
+                   - @call_method:
+                        object: $issue
+                        method: setResolution
+                        method_parameters: [$resolution]
+
+            reopen_definition:
+                post_actions:
+                   - @call_method:
+                        object: $issue
+                        method: setAssignee
+                        method_parameters: [$assignee]
+                   - @call_method:
+                        object: $issue
+                        method: setResolution
+                        method_parameters: [$resolution_entity]

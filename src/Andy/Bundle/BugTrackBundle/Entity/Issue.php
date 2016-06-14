@@ -9,6 +9,8 @@ use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -30,7 +32,17 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          },
  *          "security"={
  *              "type"="ACL"
- *          }
+ *          },
+ *          "workflow"={
+ *              "active_workflow"="issue_workflow"
+ *          },  
+ *          "tag"={
+ *              "enabled"=true,
+ *              "enableGridColumn"=true
+ *          },
+ *          "note"={
+ *              "enabled"=true
+ *          },
  *      }
  * )
  */
@@ -168,6 +180,22 @@ class Issue extends ExtendIssue implements DatesAwareInterface
      * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $organization;
+
+    /**
+     * @var WorkflowItem
+     *
+     * @ORM\OneToOne(targetEntity="Oro\Bundle\WorkflowBundle\Entity\WorkflowItem")
+     * @ORM\JoinColumn(name="workflow_item_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $workflowItem;
+
+    /**
+     * @var WorkflowStep
+     *
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\WorkflowBundle\Entity\WorkflowStep")
+     * @ORM\JoinColumn(name="workflow_step_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $workflowStep;    
 
     public function __construct()
     {
@@ -575,4 +603,42 @@ class Issue extends ExtendIssue implements DatesAwareInterface
     {
         return $this->organization;
     }
+
+    /**
+     * @param WorkflowItem $workflowItem
+     * @return Issue
+     */
+    public function setWorkflowItem($workflowItem)
+    {
+        $this->workflowItem = $workflowItem;
+
+        return $this;
+    }
+
+    /**
+     * @return WorkflowItem
+     */
+    public function getWorkflowItem()
+    {
+        return $this->workflowItem;
+    }
+
+    /**
+     * @param WorkflowItem $workflowStep
+     * @return Issue
+     */
+    public function setWorkflowStep($workflowStep)
+    {
+        $this->workflowStep = $workflowStep;
+
+        return $this;
+    }
+
+    /**
+     * @return WorkflowStep
+     */
+    public function getWorkflowStep()
+    {
+        return $this->workflowStep;
+    }    
 }
