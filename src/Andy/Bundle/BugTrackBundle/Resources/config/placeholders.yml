@@ -1,0 +1,17 @@
+placeholders:
+    view_content_data_additional_information:
+        items:
+            oro_user_issue: ~
+    view_navButtons_before:
+        items:
+            oro_user_issue_create_btn: ~
+
+items:
+    oro_user_issue:
+        template: AndyBugTrackBundle:UserIssues:issues.html.twig
+        applicable: '@oro_ui.placeholder.filter->isInstanceOf($entity$, %oro_user.entity.class%)'
+        acl: issue_view
+    oro_user_issue_create_btn:
+        template: AndyBugTrackBundle:Issue:button.html.twig
+        applicable: '@oro_ui.placeholder.filter->isInstanceOf($entity$, %oro_user.entity.class%)'
+        acl: issue_create

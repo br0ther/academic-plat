@@ -128,10 +128,10 @@ class IssueController extends Controller
             );
         }
 
-        return array(
+        return [
             'entity' => $issue,
             'form' => $form->createView(),
-        );
+        ];
     }
 
     /**
@@ -175,6 +175,22 @@ class IssueController extends Controller
         $entityManager->flush();
         
         return $this->redirectToRoute('issue_index');
+    }
+
+    /**
+     * @Route("/widget/updated_at/{id}", name="issue_widget_updated_at", requirements={"id"="\d+"})
+     * @Template
+     * @AclAncestor("issue_view")
+     * 
+     * @param Issue $issue
+     * 
+     * @return array
+     */
+    public function updatedAtAction(Issue $issue)
+    {
+        return [
+            'updatedAt' => $issue->getUpdatedAt(),
+        ];
     }
 
 }

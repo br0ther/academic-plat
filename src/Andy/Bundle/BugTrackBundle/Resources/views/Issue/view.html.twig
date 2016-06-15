@@ -45,6 +45,14 @@
 {% endblock breadcrumb %}
 
 {% block content_data %}
+    {% set issueUpdatedAtWidget %}
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'url': path('issue_widget_updated_at', {id: entity.id}),
+            'alias': 'bug_track_issue_updated_at'
+        }) }}
+    {% endset %}
+
     {% set data %}
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
@@ -54,7 +62,7 @@
                     {{ UI.renderProperty('andy.bugtrack.issue.type.label'|trans, entity.type) }}
                     {{ UI.renderHtmlProperty('andy.bugtrack.issue.description.label'|trans, entity.description|nl2br) }}
                     {{ UI.renderProperty('oro.ui.created_at'|trans, entity.createdAt|oro_format_datetime) }}
-                    {{ UI.renderProperty('oro.ui.updated_at'|trans, entity.updatedAt|oro_format_datetime) }}
+                    {{ UI.renderAttribute('oro.ui.updated_at'|trans, issueUpdatedAtWidget) }}
                     {{ UI.renderProperty('andy.bugtrack.issue.priority.label'|trans, entity.priority) }}
                     {{ UI.renderProperty('andy.bugtrack.issue.resolution.label'|trans, entity.resolution) }}
 
@@ -89,17 +97,6 @@
             ]
         }
     ] %}
-
-    {#{% set dataBlocks = dataBlocks|merge([{#}
-    {#'title': 'andy.bugtrack.issue.user_issues.label'|trans,#}
-    {#'subblocks': [{#}
-    {#'title': '',#}
-    {#'useSpan': false,#}
-    {#'data' : [#}
-    {#dataGrid.renderGrid('user-issues-grid', {'userId': user.id})#}
-    {#]#}
-    {#}]#}
-    {#}] ) %}#}
 
     {% if entity.relatedIssues is not null %}
         {% set dataBlocks = dataBlocks|merge([{
@@ -142,5 +139,11 @@
 
     {% set id = 'issueView' %}
     {% set data = { 'dataBlocks': dataBlocks } %}
+
     {{ parent() }}
+
+    <div id="issue-updated-at-component"
+         data-page-component-module="andybugtrack/js/app/components/issue-updated-at-component"
+         data-page-component-options="">
+    </div>
 {% endblock content_data %}

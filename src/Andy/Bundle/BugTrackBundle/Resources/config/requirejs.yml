@@ -1,0 +1,3 @@
+config:
+    paths:
+        'andybugtrack/js/app/components/issue-updated-at-component': 'bundles/andybugtrack/js/app/components/issue-updated-at-component.js'

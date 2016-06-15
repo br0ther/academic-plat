@@ -103,6 +103,9 @@ class IssueHandler
         $this->em->flush();
     }
 
+    /**
+     * @param Note $note
+     */
     public function setIssueUpdatedAtWithNote(Note $note)
     {
         /** @var Issue $issue */

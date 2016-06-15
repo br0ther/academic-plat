@@ -1,0 +1,25 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{{ UI.clientButton({
+    'dataUrl': path('issue_create', { userId: entity.id }),
+    'aCss': 'btn-primary no-hash',
+    'dataId': entity.id,
+    'label': 'andy.bugtrack.issue.action.create'|trans,
+    'title': 'andy.bugtrack.issue.action.create'|trans,
+    'widget' : {
+        'type' : 'dialog',
+        'multiple' : true,
+        'reload-grid-name' : 'user-issues-grid',
+        'options' : {
+            'alias': 'create-issue-dialog',
+            'dialogOptions' : {
+                'title' : 'andy.bugtrack.issue.entity_label'|trans({'%username%': entity|oro_format_name}),
+                'allowMaximize': false,
+                'allowMinimize': false,
+                'modal': true,
+                'dblclick': 'maximize',
+                'maximizedHeightDecreaseBy': 'minimize-bar',
+                'width': 550
+            }
+        }
+    }
+}) }}
