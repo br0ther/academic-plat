@@ -1,0 +1,18 @@
+{% extends 'OroSearchBundle:Search:searchResultItem.html.twig' %}
+
+{% set showImage = false %}
+
+{% set recordUrl = indexer_item.recordUrl %}
+{% set title = entity.code ~ ': ' ~ indexer_item.recordTitle %}
+
+{% set entityType = 'andy.bugtrack.issue.entity_label'|trans %}
+
+{% set entityInfo = [
+{'title': 'andy.bugtrack.issue.type.label'|trans, 'value': entity.type? entity.type : 'N/A'},
+{'title': 'andy.bugtrack.issue.priority.label'|trans, 'value': entity.priority.name ? entity.priority.name : 'N/A'},
+{'title': 'andy.bugtrack.issue.workflow_step.label'|trans, 'value': entity.workflowStep ? entity.workflowStep : 'N/A'},
+{'title': 'andy.bugtrack.issue.reporter.label'|trans, 'value': entity.reporter.firstName ~ ' ' ~ entity.reporter.lastName},
+{'title': 'andy.bugtrack.issue.assignee.label'|trans, 'value': entity.assignee.firstName ~ ' ' ~ entity.assignee.lastName},
+{'title': 'oro.ui.created_at'|trans, 'value': entity.createdAt ? entity.createdAt|oro_format_datetime : 'N/A'},
+{'title': 'oro.ui.updated_at'|trans, 'value': entity.updatedAt ? entity.updatedAt|oro_format_datetime : 'N/A'},
+] %}

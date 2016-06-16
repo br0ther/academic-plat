@@ -1,0 +1,29 @@
+oro_menu_config:
+    items:
+        issues:
+            label: 'andy.bugtrack.issue.menu.label'
+            route: 'issue_index'
+            extras:
+                routes: ['issue_*']
+        issues_report:
+            label: 'andy.bugtrack.issue.report'
+            route: 'oro_report_index'
+            routeParameters:
+                reportGroupName: issues
+                reportName:      issues
+
+    tree:
+        application_menu:
+            children:
+                activities_tab:
+                    children:
+                        issues: ~
+                reports_tab:
+                    children:
+                        issues_report: ~
+
+oro_titles:
+    issue_index: ~
+    issue_view: '%%entity.code%%'
+    issue_create: oro.ui.create_entity
+    issue_update: 'Update %%entity.code%%'
