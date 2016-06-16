@@ -9,9 +9,11 @@ use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Issue
@@ -19,6 +21,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="bug_track_issue")
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="Andy\Bundle\BugTrackBundle\Entity\Repository\IssueRepository")
+ *
+ * @UniqueEntity(fields="code", message="Sorry, this code is already in use.")
  *
  * @SuppressWarnings(PHPMD.TooManyFields)
  * @Config(
@@ -72,6 +76,16 @@ class Issue extends ExtendIssue implements DatesAwareInterface
      * @ORM\Column type="string", length=255)
      * @Assert\NotBlank()
      * @Assert\Length(min=3)
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=50
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $summary;
 
@@ -80,6 +94,17 @@ class Issue extends ExtendIssue implements DatesAwareInterface
      *
      * @ORM\Column(type="string", unique=true, length=25)
      * @Assert\NotBlank()
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "identity"=true,     
+     *              "order"=40
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $code;
 
@@ -87,6 +112,16 @@ class Issue extends ExtendIssue implements DatesAwareInterface
      * @var string
      *
      * @ORM\Column(type="text", nullable=true, length=255, unique=false)
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=60
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $description;
 
@@ -96,6 +131,16 @@ class Issue extends ExtendIssue implements DatesAwareInterface
      * @ORM\ManyToOne(targetEntity="Priority")
      * @ORM\JoinColumn(name="priority_id", referencedColumnName="id", onDelete="SET NULL")
      * @Assert\NotBlank()
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=90,
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $priority;
 
@@ -104,6 +149,16 @@ class Issue extends ExtendIssue implements DatesAwareInterface
      *
      * @ORM\ManyToOne(targetEntity="Resolution")
      * @ORM\JoinColumn(name="resolution_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=80,
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $resolution;
 
@@ -113,6 +168,13 @@ class Issue extends ExtendIssue implements DatesAwareInterface
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="reporter_id", referencedColumnName="id", onDelete="SET NULL")
      * @Assert\NotBlank()
+     * @ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $reporter;
 
@@ -121,6 +183,13 @@ class Issue extends ExtendIssue implements DatesAwareInterface
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="assignee_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $assignee;
 
@@ -131,6 +200,13 @@ class Issue extends ExtendIssue implements DatesAwareInterface
      * @ORM\JoinTable(name="bug_track_issue_related",
      *      joinColumns={@ORM\JoinColumn(name="issue_id", referencedColumnName="id", onDelete="CASCADE")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="related_id", referencedColumnName="id", onDelete="CASCADE")}
+     * )
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
      * )
      */
     protected $relatedIssues;
@@ -143,6 +219,13 @@ class Issue extends ExtendIssue implements DatesAwareInterface
      *      joinColumns={@ORM\JoinColumn(name="issue_id", referencedColumnName="id", onDelete="CASCADE")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      */
     protected $collaborators;
 
@@ -151,6 +234,13 @@ class Issue extends ExtendIssue implements DatesAwareInterface
      *
      * @ORM\ManyToOne(targetEntity="Issue", inversedBy="childIssues")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $parentIssue;
 

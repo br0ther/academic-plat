@@ -32,6 +32,9 @@ triggers:
         -
             event: update
             field: assignee
+        -
+            event: update
+            field: reporter
     note_collaborators_definition:
         -
             event: create

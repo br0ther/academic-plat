@@ -10,16 +10,20 @@ class LoadPriority extends AbstractFixture
 {
     protected $priorities = [
         [
-            'name'  => 'Low',
+            'name'  => 'Trivial',
             'priority' => 10
         ],
         [
-            'name'  => 'Medium',
+            'name'  => 'Major',
             'priority' => 20
         ],
         [
-            'name'  => 'High',
+            'name'  => 'Critical',
             'priority' => 30
+        ],
+        [
+            'name'  => 'Blocker',
+            'priority' => 40
         ]
     ];
 

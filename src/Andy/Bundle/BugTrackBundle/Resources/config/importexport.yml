@@ -1,0 +1,24 @@
+services:
+    # Export
+    andy_bug_track.importexport.data_converter.issue:
+        parent: oro_importexport.data_converter.configurable
+
+    andy_bug_track.importexport.processor.export.issue:
+        parent: oro_importexport.processor.export_abstract
+        calls:
+            - [setDataConverter,  ['@andy_bug_track.importexport.data_converter.issue']]
+        tags:
+            - { name: oro_importexport.processor, type: export, entity: %issue.entity.class%, alias: issue_export }
+
+    # Import
+    andy_bug_track.importexport.strategy.issue.add_or_replace:
+        parent: oro_importexport.strategy.configurable_add_or_replace
+
+    oro.importexport.processor.import.issue:
+        parent: oro_importexport.processor.import_abstract
+        calls:
+          - [setDataConverter, ['@andy_bug_track.importexport.data_converter.issue']]
+          - [setStrategy, ['@andy_bug_track.importexport.strategy.issue.add_or_replace']]
+        tags:
+          - { name: oro_importexport.processor, type: import, entity: '%issue.entity.class%', alias: issue_import }
+          - { name: oro_importexport.processor, type: import_validation, entity: '%issue.entity.class%', alias: issue_import }

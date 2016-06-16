@@ -7,7 +7,7 @@ datagrid:
             type: orm
             query:
                 select:
-                    - issue.id
+                    - distinct issue.id
                     - issue.code
                     - issue.summary
                     - type_enum.name as type
@@ -19,6 +19,7 @@ datagrid:
                     - CONCAT(reporter.firstName, ' ', reporter.lastName) as reporterFullName
                     - issue.createdAt
                     - issue.updatedAt
+                    - workflow_step.label as step
                 from:
                     - { table: AndyBugTrackBundle:Issue, alias: issue }
                 join:
@@ -29,6 +30,7 @@ datagrid:
                         - { join: issue.assignee, alias: assignee }
                         - { join: issue.reporter, alias: reporter }
                         - { join: issue.collaborators, alias: collaborators }
+                        - { join: issue.workflowStep, alias: workflow_step }
         columns:
             code:
                 label: andy.bugtrack.issue.code.label
@@ -53,6 +55,8 @@ datagrid:
             collaborators:
                 label: andy.bugtrack.issue.collaborators.label
                 renderable: false
+            step:
+                label: andy.bugtrack.issue.workflow_step.label
         sorters:
             columns:
                 code:
@@ -62,7 +66,7 @@ datagrid:
                 type:
                     data_name: issue.type
                 priorityName:
-                    data_name: priority.name
+                    data_name: priority.priority
                 resolutionName:
                     data_name: resolution.name
                 reporterFullName:
@@ -73,6 +77,8 @@ datagrid:
                     data_name: issue.createdAt
                 updatedAt:
                     data_name: issue.updatedAt
+                step:
+                    data_name: workflow_step.stepOrder
             default:
                 updatedAt: DESC
         filters:

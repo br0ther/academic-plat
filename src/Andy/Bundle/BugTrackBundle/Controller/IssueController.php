@@ -32,7 +32,8 @@ class IssueController extends Controller
     {
 
         return [
-            'gridName'     => 'issues-grid'
+            'gridName'     => 'issues-grid',
+            'entity_class' => $this->container->getParameter('issue.entity.class'),
         ];
     }
 
@@ -131,6 +132,7 @@ class IssueController extends Controller
         return [
             'entity' => $issue,
             'form' => $form->createView(),
+            'isWidgetContext' => ($request->query->getInt('userId') > 0 ) ? true : false
         ];
     }
 

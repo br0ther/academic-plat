@@ -3,12 +3,24 @@
 namespace Andy\Bundle\BugTrackBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 /**
  * Class Priority
  *
  * @ORM\Entity
  * @ORM\Table(name="bug_track_priority")
+ * @Config(
+ *      routeName="priority_index",
+ *      defaultValues={
+ *          "security"={
+ *              "type"="ACL",
+ *              "permissions"="All",
+ *              "group_name"=""
+ *          }
+ *      }
+ * )
  */
 class Priority
 {
@@ -25,6 +37,15 @@ class Priority
      * @var string
      *
      * @ORM\Column(name="name", type="string", unique=true)
+     * @ConfigField(
+     *  defaultValues={
+     *      "dataaudit"={"auditable"=true},
+     *      "importexport"={
+     *          "identity"=true,
+     *          "order"=10
+     *      }
+     *  }
+     * )
      */
     protected $name;
 

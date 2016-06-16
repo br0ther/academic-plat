@@ -4,6 +4,13 @@
 {% set pageTitle = 'andy.bugtrack.issue.menu.label'|trans %}
 
 {% block navButtons %}
+    {% include 'OroImportExportBundle:ImportExport:buttons.html.twig' with {
+    entity_class: entity_class,
+    exportProcessor: 'issue_export',
+    importProcessor: 'issue_import',
+    dataGridName: gridName
+    } %}
+
     {% if resource_granted('issue_create') %}
         {{ UI.addButton({
             'aCss': 'btn-group',
