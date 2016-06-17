@@ -223,3 +223,20 @@ datagrid:
         options:
             toolbarOptions:
                 hide: true
+
+    widget-issues-grid:
+        extends: issues-grid
+        source:
+            query:
+                where:
+                    and:
+                        - collaborators.id = :userId
+            bind_parameters:
+                - userId
+        filters: ~
+        options:
+            toolbarOptions:
+                hide: true
+                pageSize:
+                    items: [10]
+                    default_per_page: 10

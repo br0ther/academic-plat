@@ -32,6 +32,13 @@ andy:
             organization.label:         Organization
             parent.label:               Parent
             children.label:             Children
+            created_at.label:           Created At
+            updated_at.label:           Updated At
+            id.label:                   ID
+            workflow_item.label:        Workflow Item
+            related_issues.label:       Related Issues
+            parent_issue.label:         Parent Issue
+            child_issues.label:         Child Issues
 
             priority:
                 entity_label:   Issue Priority

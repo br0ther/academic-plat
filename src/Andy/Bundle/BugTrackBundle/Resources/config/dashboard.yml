@@ -1,0 +1,20 @@
+oro_dashboard_config:
+    widgets:
+        issues_widget:
+            label:       'andy.bugtrack.issue.widget.label'
+            route:       dashboard_issues_widget_grid
+            acl:         issue_view
+            description: 'andy.bugtrack.issue.widget.description'
+
+        issues_by_status:
+            label:       'andy.bugtrack.issue.widget.label_by_status'
+            route:       dashboard_issues_by_status_chart
+            acl:         issue_view
+            description: 'andy.bugtrack.issue.widget.description_by_status'
+#            configuration:
+#                dateRange:
+#                    type: oro_type_widget_date_range
+#                    options:
+#                       label: oro.dashboard.date_range.label
+#                    show_on_widget: true
+

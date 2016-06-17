@@ -1,0 +1,16 @@
+{% extends 'OroDashboardBundle:Dashboard:widget.html.twig' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% block content %}
+    {{ dataGrid.renderGrid('widget-issues-grid',{'userId':user.id}) }}
+{% endblock %}
+
+{% block actions %}
+    {% set actions = [{
+    'url': path('issue_index',{'issues-grid[_filter][collaborators][value]':user.id}),
+    'type': 'link',
+    'label': 'andy.bugtrack.issue.view_all'| trans
+    }] %}
+
+    {{ parent() }}
+{% endblock %}
