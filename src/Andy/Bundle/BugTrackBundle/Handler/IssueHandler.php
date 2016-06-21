@@ -98,7 +98,11 @@ class IssueHandler
     {
         $issue = $note->getTarget();
 
-        $issue->addCollaborator($this->getUser());
+        if ($this->getUser()) {
+            $issue->addCollaborator($this->getUser());
+        } else {
+            $issue->addCollaborator($note->getOwner());
+        }
 
         $this->em->flush();
     }
