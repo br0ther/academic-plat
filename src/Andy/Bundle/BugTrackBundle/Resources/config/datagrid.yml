@@ -107,13 +107,20 @@ datagrid:
                     data_name: priority.name
                     options:
                         field_options:
-                              class: AndyBugTrackBundle:Priority
-                              multiple: true
-                              property: name
-                              translatable_options: false
+                            class: AndyBugTrackBundle:Priority
+                            multiple: true
+                            property: name
+                            translatable_options: false
                 resolutionName:
-                    type: string
-                    data_name: issue.resolution
+                    label: andy.bugtrack.issue.resolution.label
+                    type: entity
+                    data_name: resolution.name
+                    options:
+                        field_options:
+                            class: AndyBugTrackBundle:Resolution
+                            multiple: true
+                            property: name
+                            translatable_options: false
                 reporterFullName:
                     type: string
                     data_name: issue.reporter
@@ -126,6 +133,14 @@ datagrid:
                 updatedAt:
                     type:      datetime
                     data_name: issue.updatedAt
+                step:
+                    type: entity
+                    data_name: issue.workflowStep
+                    options:
+                        field_options:
+                            class: OroWorkflowBundle:WorkflowStep
+                            translatable_options: false
+                            multiple: true
         properties:
             id: ~
             owner: ~
@@ -231,6 +246,7 @@ datagrid:
                 where:
                     and:
                         - collaborators.id = :userId
+                        - "workflow_step.name not in ('resolved', 'closed')"
             bind_parameters:
                 - userId
         filters: ~

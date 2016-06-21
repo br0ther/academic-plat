@@ -4,6 +4,7 @@ namespace Andy\Bundle\BugTrackBundle\Controller;
 
 use Andy\Bundle\BugTrackBundle\Entity\Issue;
 use Andy\Bundle\BugTrackBundle\Form\Type\IssueFormType;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\NavigationBundle\Annotation\TitleTemplate;
@@ -11,6 +12,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -59,6 +61,8 @@ class IssueController extends Controller
         $isSubtask = false;
 
         if ($parentId = $request->query->getInt('parent')) {
+            
+            /** @var ObjectRepository $issueTypesRepository */
             $issueTypesRepository = $this->getDoctrine()->getManager()
                 ->getRepository(ExtendHelper::buildEnumValueClassName('issue_type'));
 
@@ -69,12 +73,14 @@ class IssueController extends Controller
                 ]);
 
             if ($parent) {
-                $issue->setParentIssue($parent)->setType($issueTypesRepository->findOneBy(['name' => Issue::TYPE_SUBTASK]));
+                $issue->setParentIssue($parent)->setType(
+                    $issueTypesRepository->findOneBy(['name' => Issue::TYPE_SUBTASK])
+                );
                 $isSubtask = true;
             }
         }
 
-        return $this->update($issue, $request, $isSubtask);
+        return $this->update($issue, $isSubtask);
     }
 
     /**
@@ -88,52 +94,47 @@ class IssueController extends Controller
      * )
      *
      * @param Issue $issue
-     * @param Request $request
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function updateAction(Issue $issue, Request $request)
+    public function updateAction(Issue $issue)
     {
-        return $this->update($issue, $request);
+        return $this->update($issue);
     }
 
     /**
-     * @param Issue   $issue
-     * @param Request $request
-     * @param bool    $isSubtask
-     *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @param Issue $issue
+     * @param bool  $isSubtask
+     * 
+     * @return array|RedirectResponse
      */
-    private function update(Issue $issue, Request $request, $isSubtask = false)
+    public function update(Issue $issue, $isSubtask = false)
     {
         $issueTypes = $this->get('andy_bug_track.handler.issue_handler')->getIssueTypes($isSubtask);
 
-        $form = $this->get('form.factory')->create(new IssueFormType($issueTypes), $issue);
+//        return $this->get('oro_form.model.update_handler')->update(
+//            $issue,
+//            $this->createForm(new IssueFormType($issueTypes), $issue),
+//            $this->get('translator')->trans('oro.tracking.trackingwebsite.saved_message')
+//        );
 
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($issue);
-            $entityManager->flush();
-
-            return $this->get('oro_ui.router')->redirectAfterSave(
-                [
-                    'route'      => 'issue_update',
-                    'parameters' => ['id' => $issue->getId()],
-                ],
-                ['route'      => 'issue_view',
-                    'parameters' => ['id' => $issue->getId()]
-                ],
-                $issue
-            );
-        }
-
-        return [
-            'entity' => $issue,
-            'form' => $form->createView(),
-            'isWidgetContext' => ($request->query->getInt('userId') > 0 ) ? true : false
-        ];
+        return $this->get('oro_form.model.update_handler')->handleUpdate(
+            $issue,
+            $this->createForm(new IssueFormType($issueTypes), $issue),
+            function (Issue $entity) {
+                return [
+                    'route' => 'issue_update',
+                    'parameters' => ['id' => $entity->getId()]
+                ];
+            },
+            function (Issue $entity) {
+                return [
+                    'route' => 'issue_view',
+                    'parameters' => ['id' => $entity->getId()]
+                ];
+            },
+            $this->get('translator')->trans('andy.bugtrack.issue.saved_message')
+        );
     }
 
     /**

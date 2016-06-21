@@ -3,6 +3,8 @@
 namespace Andy\Bundle\BugTrackBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
 use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
@@ -15,7 +17,7 @@ use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class AndyBugTrackBundle implements Migration, ExtendExtensionAwareInterface, NoteExtensionAwareInterface
+class AndyBugTrackBundle implements Migration, ExtendExtensionAwareInterface, NoteExtensionAwareInterface, ActivityExtensionAwareInterface
 {
     /**
      * @var ExtendExtension
@@ -26,6 +28,9 @@ class AndyBugTrackBundle implements Migration, ExtendExtensionAwareInterface, No
      * @var NoteExtension
      */
     protected $noteExtension;
+
+    /** @var ActivityExtension */
+    protected $activityExtension;
 
     /**
      * {@inheritdoc}
@@ -46,6 +51,14 @@ class AndyBugTrackBundle implements Migration, ExtendExtensionAwareInterface, No
     public function setNoteExtension(NoteExtension $noteExtension)
     {
         $this->noteExtension = $noteExtension;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setActivityExtension(ActivityExtension $activityExtension)
+    {
+        $this->activityExtension = $activityExtension;
     }
 
     /**
@@ -121,7 +134,11 @@ class AndyBugTrackBundle implements Migration, ExtendExtensionAwareInterface, No
         $table->addIndex(['organization_id'], 'IDX_671503B332C8A3DE', []);
         $table->addIndex(['workflow_step_id'], 'IDX_671503B371FE882C', []);
 
+        //Enables Notes activity for Issue entity
         $this->noteExtension->addNoteAssociation($schema, $table->getName());
+
+        //Enables Email activity for Issue entity
+        $this->activityExtension->addActivityAssociation($schema, 'oro_email', $table->getName(), true);
     }
 
     /**

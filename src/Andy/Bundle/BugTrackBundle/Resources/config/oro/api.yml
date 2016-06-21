@@ -1,0 +1,4 @@
+oro_api:
+    entities:
+        Andy\Bundle\BugTrackBundle\Entity\Issue:
+            exclusion_policy: none
