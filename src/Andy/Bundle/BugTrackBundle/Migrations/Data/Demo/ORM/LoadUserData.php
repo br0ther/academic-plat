@@ -17,7 +17,7 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface
      */   
     const USER_ADMIN_NAME = 'test_user_admin';
     const USER_ONE_NAME = 'test_user_one';
-    const USER_TWO_NAME = 'test_user_two1';
+    const USER_TWO_NAME = 'test_user_two';
     
     /**
      * @var ContainerInterface

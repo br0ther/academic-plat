@@ -154,7 +154,7 @@ datagrid:
                 params: [ id ]
             delete_link:
                 type: url
-                route: issue_delete
+                route: issue_grid_delete
                 params: [ id ]
         actions:
             view_issue:

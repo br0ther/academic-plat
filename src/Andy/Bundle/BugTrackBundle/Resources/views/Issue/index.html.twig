@@ -7,6 +7,7 @@
     {% include 'OroImportExportBundle:ImportExport:buttons.html.twig' with {
     entity_class: entity_class,
     exportProcessor: 'issue_export',
+    exportTemplateProcessor: 'issue_template',
     importProcessor: 'issue_import',
     dataGridName: gridName
     } %}

@@ -12,6 +12,8 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -178,6 +180,35 @@ class IssueController extends Controller
         $entityManager->flush();
         
         return $this->redirectToRoute('issue_index');
+    }
+
+    /**
+     * @Route("/deletegrid/{id}", name="issue_grid_delete", requirements={"id":"\d+"})
+     * @Method({"DELETE"})
+     * @Acl(
+     *     id="issue_delete",
+     *     type="entity",
+     *     class="AndyBugTrackBundle:Issue",
+     *     permission="DELETE"
+     * )
+     *
+     * @param Issue $issue
+     *
+     * @return JsonResponse
+     */
+    public function deleteFromGridAction(Issue $issue)
+    {
+        $id = $issue->getId();
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($issue);
+        $entityManager->flush();
+
+        return new JsonResponse(
+            [
+                'id' => $id,
+                'success' => true
+            ]
+        );
     }
 
     /**
