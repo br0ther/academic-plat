@@ -1,12 +1,12 @@
 <?php
 
-namespace Andy\Bundle\BugTrackBundle\Migrations\Data\Demo\ORM;
+namespace Andy\Bundle\BugTrackBundle\Tests\Functional\DataFixtures;
 
 use Andy\Bundle\BugTrackBundle\DataFixtures\ORM\IssuesDataLoader;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadIssueData extends IssuesDataLoader implements OrderedFixtureInterface
+class TestIssueData extends IssuesDataLoader implements OrderedFixtureInterface
 {
     /**
      * @return int
@@ -21,6 +21,6 @@ class LoadIssueData extends IssuesDataLoader implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $this->loadIssues($manager, $this->demoIssueData);
+        $this->loadIssues($manager, $this->testIssueData);
     }
 }

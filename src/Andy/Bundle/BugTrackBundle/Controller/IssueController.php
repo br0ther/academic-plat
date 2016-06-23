@@ -114,12 +114,6 @@ class IssueController extends Controller
     {
         $issueTypes = $this->get('andy_bug_track.handler.issue_handler')->getIssueTypes($isSubtask);
 
-//        return $this->get('oro_form.model.update_handler')->update(
-//            $issue,
-//            $this->createForm(new IssueFormType($issueTypes), $issue),
-//            $this->get('translator')->trans('oro.tracking.trackingwebsite.saved_message')
-//        );
-
         return $this->get('oro_form.model.update_handler')->handleUpdate(
             $issue,
             $this->createForm(new IssueFormType($issueTypes), $issue),
