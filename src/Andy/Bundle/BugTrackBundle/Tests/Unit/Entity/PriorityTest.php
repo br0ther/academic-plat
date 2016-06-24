@@ -20,5 +20,4 @@ class PriorityTest extends \PHPUnit_Framework_TestCase
         $obj->setName('Critical');
         $this->assertEquals($obj->__toString(), 'Critical');
     }
-
 }

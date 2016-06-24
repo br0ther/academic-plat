@@ -17,7 +17,8 @@ use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class AndyBugTrackBundle implements Migration, ExtendExtensionAwareInterface, NoteExtensionAwareInterface, ActivityExtensionAwareInterface
+class AndyBugTrackBundle implements Migration, ExtendExtensionAwareInterface,
+ NoteExtensionAwareInterface, ActivityExtensionAwareInterface
 {
     /**
      * @var ExtendExtension

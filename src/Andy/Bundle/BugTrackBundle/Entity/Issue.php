@@ -50,7 +50,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *      }
  * )
  */
-class Issue extends ExtendIssue implements DatesAwareInterface 
+class Issue extends ExtendIssue implements DatesAwareInterface
 {
     /**
      * Issue types
@@ -285,7 +285,7 @@ class Issue extends ExtendIssue implements DatesAwareInterface
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\WorkflowBundle\Entity\WorkflowStep")
      * @ORM\JoinColumn(name="workflow_step_id", referencedColumnName="id", onDelete="SET NULL")
      */
-    protected $workflowStep;    
+    protected $workflowStep;
 
     public function __construct()
     {
@@ -730,5 +730,5 @@ class Issue extends ExtendIssue implements DatesAwareInterface
     public function getWorkflowStep()
     {
         return $this->workflowStep;
-    }    
+    }
 }

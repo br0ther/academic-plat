@@ -19,5 +19,4 @@ class ResolutionTest extends \PHPUnit_Framework_TestCase
         $obj->setName('Duplicate');
         $this->assertEquals($obj->__toString(), 'Duplicate');
     }
-
 }

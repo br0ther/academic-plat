@@ -30,5 +30,4 @@ class LoadIssueDashboard extends AbstractDashboardFixture implements DependentFi
             $manager->flush();
         }
     }
-
 }

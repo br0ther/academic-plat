@@ -158,7 +158,8 @@ abstract class IssuesDataLoader extends AbstractFixture implements ContainerAwar
         $this->container = $container;
     }
 
-    public function loadIssues(ObjectManager $manager, $issuesData) {
+    public function loadIssues(ObjectManager $manager, $issuesData)
+    {
         $issueRepo = $manager->getRepository('AndyBugTrackBundle:Issue');
         $priorityRepo = $manager->getRepository('AndyBugTrackBundle:Priority');
         $users = $manager->getRepository('OroUserBundle:User')->findBy(['enabled' => 1]);
@@ -210,7 +211,8 @@ abstract class IssuesDataLoader extends AbstractFixture implements ContainerAwar
         }
     }
 
-    public function loadUsers(ObjectManager $manager, array $usersData) {
+    public function loadUsers(ObjectManager $manager, array $usersData)
+    {
         $userManager = $this->container->get('oro_user.manager');
         $organization = $manager->getRepository('OroOrganizationBundle:Organization')->getFirst();
         $businessUnit = $manager
@@ -235,7 +237,8 @@ abstract class IssuesDataLoader extends AbstractFixture implements ContainerAwar
                     ->setLastName($data['last'])
                     ->addRole(
                         $manager->getRepository('OroUserBundle:Role')
-                            ->findOneBy(['role' => $data['role']]))
+                            ->findOneBy(['role' => $data['role']])
+                    )
                     ->setOwner($businessUnit);
 
                 $userManager->updateUser($user);

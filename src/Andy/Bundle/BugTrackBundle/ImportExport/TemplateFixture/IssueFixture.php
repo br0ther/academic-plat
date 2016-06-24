@@ -47,7 +47,8 @@ class IssueFixture extends AbstractTemplateRepository implements TemplateFixture
                 ->getEntityRepository('Oro\Bundle\OrganizationBundle\Entity\Organization');
             $priorityRepository     = $this->templateManager
                 ->getEntityRepository('\Andy\Bundle\BugTrackBundle\Entity\Priority');
-            $issueTypeRepo = $this->templateManager->getEntityRepository(ExtendHelper::buildEnumValueClassName('issue_type'));
+            $issueTypeRepo = $this->templateManager
+                ->getEntityRepository(ExtendHelper::buildEnumValueClassName('issue_type'));
             $entity->setCode(self::SAMPLE_ISSUE_CODE);
             $entity->setSummary('Sample task');
             $entity->setDescription('Sample description');

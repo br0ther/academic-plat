@@ -37,7 +37,7 @@ class IssueFormTypeTest extends FormIntegrationTestCase
      * @dataProvider issueDataProvider
      * @param $formData
      */
-    public function testSubmitValidData($formData) 
+    public function testSubmitValidData($formData)
     {
         $form = $this->factory->create('form', $this->type);
 

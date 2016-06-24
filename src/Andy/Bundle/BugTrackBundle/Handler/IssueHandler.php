@@ -49,7 +49,7 @@ class IssueHandler
         }
 
         return null;
-    }    
+    }
 
     /**
      * @param bool $isSubtask

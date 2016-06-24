@@ -220,5 +220,4 @@ class IssueController extends Controller
             'updatedAt' => $issue->getUpdatedAt(),
         ];
     }
-
 }

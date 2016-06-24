@@ -82,5 +82,4 @@ class IssueTest extends \PHPUnit_Framework_TestCase
 
         $prop->setValue($obj, $val);
     }
-
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Andy\Bundle\BugTrackBundle; 
+namespace Andy\Bundle\BugTrackBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

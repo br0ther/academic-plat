@@ -37,5 +37,4 @@ class LoadUserData extends IssuesDataLoader implements OrderedFixtureInterface
     {
         $this->loadUsers($manager, $this->demoUserData);
     }
-    
 }
