@@ -116,6 +116,7 @@ class IssueControllerTest extends WebTestCase
 
         $content = $result->getContent();
         $this->assertContains(Issue::TYPE_BUG, $content);
+        $this->assertContains('regular task created!', $content);
 
     }
 

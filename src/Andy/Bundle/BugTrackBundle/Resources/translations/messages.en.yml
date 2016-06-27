@@ -67,3 +67,6 @@ andy:
             entity_label_add:           Add Sub-Task
             entity_plural_label:        Sub-Tasks
             parent_story:               Parent Story
+
+        messages:
+            cant_create_subtask: Can't create subtask for parent type non story, regular task created!

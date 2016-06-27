@@ -9,3 +9,7 @@ services:
             - "@doctrine.orm.entity_manager"
             - "@security.token_storage"
 
+    andy_bug_track.subtask_parent.validator:
+        class: Andy\Bundle\BugTrackBundle\Validator\Constraints\ParentSubtaskValidator
+        tags:
+            - { name: validator.constraint_validator, alias: tracker_subtask_parent_validator }

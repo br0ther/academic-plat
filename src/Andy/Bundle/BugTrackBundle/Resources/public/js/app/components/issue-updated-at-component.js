@@ -10,6 +10,7 @@ define(function(require) {
                     widgetManager.getWidgetInstanceByAlias('bug_track_issue_updated_at', function(widget) {
                         mediator.on('widget_success:note-dialog', function() {
                             widget.render();
+                            mediator.trigger('datagrid:doRefresh:collaborators-grid');
                         });
                     });
                 }

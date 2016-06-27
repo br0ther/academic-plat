@@ -13,7 +13,6 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Issue
@@ -21,8 +20,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table(name="bug_track_issue")
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="Andy\Bundle\BugTrackBundle\Entity\Repository\IssueRepository")
- *
- * @UniqueEntity(fields="code", message="Sorry, this code is already in use.")
  *
  * @SuppressWarnings(PHPMD.TooManyFields)
  * @Config(

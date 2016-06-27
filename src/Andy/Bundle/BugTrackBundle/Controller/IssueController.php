@@ -57,6 +57,8 @@ class IssueController extends Controller
      */
     public function createAction(Request $request)
     {
+        $translator = $this->get('translator');
+        
         /** @var Issue $issue */
         $issue = new Issue();
         $issue->setReporter($this->getUser());
@@ -79,6 +81,11 @@ class IssueController extends Controller
                     $issueTypesRepository->findOneBy(['name' => Issue::TYPE_SUBTASK])
                 );
                 $isSubtask = true;
+            } else {
+                $this->get('session')->getFlashBag()->add(
+                    'alert',
+                    $translator->trans('andy.bugtrack.messages.cant_create_subtask')
+                );
             }
         }
 
