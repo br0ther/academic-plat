@@ -53,7 +53,7 @@ class IssueHandler
 
     /**
      * @param bool $isSubtask
-     * @return mixed
+     * @return array
      */
     public function getIssueTypes($isSubtask = false)
     {

@@ -72,9 +72,9 @@ class IssueControllerTest extends WebTestCase
     public function testUpdate()
     {
         /** @var Issue $issue */
-        $issue = $this->getReference('TEST-0001');
+        $issue = $this->getReference('TEST-0002');
 
-        $this->client->request(
+        $crawler = $this->client->request(
             'GET',
             $this->getUrl('issue_update', array('id' => $issue->getId()))
         );
@@ -82,7 +82,22 @@ class IssueControllerTest extends WebTestCase
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
 
         $content = $result->getContent();
-        $this->assertContains("TEST-0001", $content);
+        $this->assertContains("TEST-0002", $content);
+
+        $form = $crawler->filter('form[name=tracker_issue]')->form();
+
+        $data = [
+            'tracker_issue[code]' => 'TEST-0002UPD',
+            'tracker_issue[description]' => 'Changed description',
+        ];
+        
+        $crawler = $this->client->submit($form, $data);
+
+        $crawler = $this->client->followRedirect();
+        $content = $this->client->getResponse()->getContent();
+        
+        $this->assertContains('TEST-0002UPD', $content);
+        $this->assertContains('Changed description', $content);
     }
 
     public function testCreateSubtaskFromStory()
