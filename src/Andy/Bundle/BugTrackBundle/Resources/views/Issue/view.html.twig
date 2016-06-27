@@ -3,6 +3,7 @@
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 {% import 'OroUserBundle::macros.html.twig' as U %}
 {% import 'OroActivityBundle::macros.html.twig' as AC %}
+{% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
 
 {% oro_title_set({params : {"%entity.code%": entity.code|default('N/A') }}) %}
 
@@ -87,6 +88,7 @@
                 </div>
             </div>
         </div>
+        {{ entityConfig.renderDynamicFields(entity) }}
     {% endset %}
     {% set dataBlocks = [
         {

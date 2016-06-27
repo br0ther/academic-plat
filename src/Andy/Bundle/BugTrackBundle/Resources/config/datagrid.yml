@@ -1,8 +1,8 @@
 datagrid:
     issues-grid:
         pageTitle: andy.bugtrack.issue.report
+        extended_entity_name: %issue.entity.class%
         source:
-            extended_entity_name: %issue.entity.class%
             acl_resource: issue_view
             type: orm
             query:
