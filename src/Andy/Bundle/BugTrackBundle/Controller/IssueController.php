@@ -3,9 +3,6 @@
 namespace Andy\Bundle\BugTrackBundle\Controller;
 
 use Andy\Bundle\BugTrackBundle\Entity\Issue;
-use Andy\Bundle\BugTrackBundle\Form\Type\IssueFormType;
-use Doctrine\Common\Persistence\ObjectRepository;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\NavigationBundle\Annotation\TitleTemplate;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -58,6 +55,7 @@ class IssueController extends Controller
     public function createAction(Request $request)
     {
         $translator = $this->get('translator');
+        $issueHandler = $this->get('andy_bug_track.handler.issue_handler');
         
         /** @var Issue $issue */
         $issue = new Issue();
@@ -65,20 +63,15 @@ class IssueController extends Controller
         $isSubtask = false;
 
         if ($parentId = $request->query->getInt('parent')) {
-            
-            /** @var ObjectRepository $issueTypesRepository */
-            $issueTypesRepository = $this->getDoctrine()->getManager()
-                ->getRepository(ExtendHelper::buildEnumValueClassName('issue_type'));
-
             $parent = $this->getDoctrine()->getRepository('AndyBugTrackBundle:Issue')
                 ->findOneBy([
                     'id'   => $parentId,
-                    'type' => $issueTypesRepository->findOneBy(['name' => Issue::TYPE_STORY])
+                    'type' => $issueHandler->getIssueTypeReference(Issue::TYPE_STORY)
                 ]);
 
             if ($parent) {
                 $issue->setParentIssue($parent)->setType(
-                    $issueTypesRepository->findOneBy(['name' => Issue::TYPE_SUBTASK])
+                    $issueHandler->getIssueTypeReference(Issue::TYPE_SUBTASK)
                 );
                 $isSubtask = true;
             } else {
@@ -123,7 +116,7 @@ class IssueController extends Controller
 
         return $this->get('oro_form.model.update_handler')->handleUpdate(
             $issue,
-            $this->createForm(new IssueFormType($issueTypes), $issue),
+            $this->createForm('tracker_issue', $issue, ['issueTypes' => $issueTypes]),
             function (Issue $entity) {
                 return [
                     'route' => 'issue_update',

@@ -6,8 +6,8 @@ services:
     andy_bug_track.handler.issue_handler:
         class: Andy\Bundle\BugTrackBundle\Handler\IssueHandler
         arguments:
-            - "@doctrine.orm.entity_manager"
             - "@security.token_storage"
+            - "@oro_entity.doctrine_helper"
 
     andy_bug_track.subtask_parent.validator:
         class: Andy\Bundle\BugTrackBundle\Validator\Constraints\ParentSubtaskValidator

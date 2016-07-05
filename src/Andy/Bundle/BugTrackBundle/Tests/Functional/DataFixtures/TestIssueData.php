@@ -9,6 +9,25 @@ use Doctrine\Common\Persistence\ObjectManager;
 class TestIssueData extends IssuesDataLoader implements OrderedFixtureInterface
 {
     /**
+     * @var array
+     */
+    protected $testIssueData = [
+        [
+            'code'     => 'TEST-0001',
+            'summary'  => 'Test story 1',
+            'type'     => 'Story',
+            'priority' => 'Trivial',
+            'notes'    => ['Test note One', 'Test note Two']
+        ],
+        [
+            'code'     => 'TEST-0002',
+            'summary'  => 'Test bug 1',
+            'type'     => 'Bug',
+            'priority' => 'Trivial'
+        ],
+    ];
+    
+    /**
      * @return int
      */
     public function getOrder()

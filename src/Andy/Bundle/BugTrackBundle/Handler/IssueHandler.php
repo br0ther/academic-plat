@@ -3,7 +3,7 @@
 namespace Andy\Bundle\BugTrackBundle\Handler;
 
 use Andy\Bundle\BugTrackBundle\Entity\Issue;
-use Doctrine\ORM\EntityManager;
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\NoteBundle\Entity\Note;
 use Oro\Bundle\UserBundle\Entity\UserInterface;
@@ -16,24 +16,24 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 class IssueHandler
 {
     /**
-     * @var EntityManager
-     */
-    protected $em;
-
-    /**
      * @var TokenInterface
      */
     private $token;
 
     /**
+     * @var DoctrineHelper
+     */
+    protected $doctrineHelper;
+
+    /**
      * Constructor.
      *
-     * @param EntityManager $em
-     * @param TokenStorage  $tokenStorage
+     * @param TokenStorage   $tokenStorage
+     * @param DoctrineHelper $doctrineHelper
      */
-    public function __construct(EntityManager $em, TokenStorage $tokenStorage)
+    public function __construct(TokenStorage $tokenStorage, DoctrineHelper $doctrineHelper)
     {
-        $this->em = $em;
+        $this->doctrineHelper = $doctrineHelper;
         $this->token = $tokenStorage->getToken();
     }
 
@@ -57,22 +57,15 @@ class IssueHandler
      */
     public function getIssueTypes($isSubtask = false)
     {
-        $className = ExtendHelper::buildEnumValueClassName('issue_type');
-
-        $qb = $this->em
-            ->createQueryBuilder()
-            ->from($className, 't')
-            ->select('t');
-        
         if ($isSubtask) {
-            $qb->where('t.id = :subtask');
+            return [$this->getIssueTypeReference(Issue::TYPE_SUBTASK)];
         } else {
-            $qb->where('t.id <> :subtask');
+            return [
+                $this->getIssueTypeReference(Issue::TYPE_BUG),
+                $this->getIssueTypeReference(Issue::TYPE_TASK),
+                $this->getIssueTypeReference(Issue::TYPE_STORY),
+            ];
         }
-
-        $qb->setParameter('subtask', lcfirst(Issue::TYPE_SUBTASK));
-
-        return $qb->getQuery()->getResult();
     }
 
     /**
@@ -88,7 +81,7 @@ class IssueHandler
             $issue->addCollaborator($collaborator);
         }
 
-        $this->em->flush();
+        $this->doctrineHelper->getEntityManager(Issue::class)->flush();
     }
 
     /**
@@ -104,7 +97,7 @@ class IssueHandler
             $issue->addCollaborator($note->getOwner());
         }
 
-        $this->em->flush();
+        $this->doctrineHelper->getEntityManager(Issue::class)->flush();
     }
 
     /**
@@ -117,6 +110,24 @@ class IssueHandler
 
         $issue->setUpdatedAt(new \DateTime('now'));
 
-        $this->em->flush();
+        $this->doctrineHelper->getEntityManager(Issue::class)->flush();
+    }
+
+    /**
+     * @param $issueTypeName
+     * 
+     * @return bool|\Doctrine\Common\Proxy\Proxy|null|object
+     * 
+     * @throws \Doctrine\ORM\ORMException
+     */
+    public function getIssueTypeReference($issueTypeName)
+    {
+        $issueTypeClass = ExtendHelper::buildEnumValueClassName('issue_type');
+        $entityManager = $this->doctrineHelper->getEntityManager($issueTypeClass);
+
+        return $entityManager->getReference(
+            $issueTypeClass,
+            lcfirst($issueTypeName)
+        );
     }
 }

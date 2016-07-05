@@ -18,7 +18,7 @@ class IssueRepository extends EntityRepository
         return $this->createQueryBuilder('issue')
             ->select('count(issue.id) as issues_count, status.label')
             ->leftJoin('issue.workflowStep', 'status')
-            ->groupBy('status.label')
+            ->groupBy('status.label, status.stepOrder')
             ->orderBy('status.stepOrder')
             ->getQuery()
             ->getArrayResult();

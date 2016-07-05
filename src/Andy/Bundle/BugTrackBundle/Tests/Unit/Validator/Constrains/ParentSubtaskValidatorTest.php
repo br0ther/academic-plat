@@ -90,7 +90,7 @@ class ParentSubtaskValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * Case when trying issue have a parent but havent type subtask
      */
-    public function testValidateSucccess()
+    public function testValidateSuccess()
     {
         $issue =$this->getMockBuilder(Issue::class)
             ->disableOriginalConstructor()

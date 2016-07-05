@@ -13,13 +13,6 @@ use Andy\Bundle\BugTrackBundle\Entity\Issue;
 
 class IssueFormType extends AbstractType
 {
-    private $types;
-
-    public function __construct(array $types)
-    {
-        $this->types = $types;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -29,7 +22,9 @@ class IssueFormType extends AbstractType
             [
                 'data_class' => Issue::class,
             ]
-        );
+        )
+            ->setDefault('issueTypes', [])
+            ->setAllowedTypes('issueTypes', 'array');
     }
     /**
      * {@inheritdoc}
@@ -67,7 +62,7 @@ class IssueFormType extends AbstractType
                 [
                     'label' => 'andy.bugtrack.issue.type.label',
                     'class' => ExtendHelper::buildEnumValueClassName('issue_type'),
-                    'choices' => $this->types,
+                    'choices' => $options['issueTypes'],
                 ]
             )
             ->add(
